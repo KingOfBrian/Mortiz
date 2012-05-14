@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+SIM="'/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app/Contents/MacOS/iPhone\ Simulator'"
+CMD="#{SIM} -SimulateApplication ../mortiz-application/Mortiz.app/Mortiz"
+
+puts "Loading the app in the simulator with:"
+puts "#{CMD}"
+puts "Launching mortiz and then closing mortiz to install in the simulator.   Do not interrupt."
+
+execution = IO.popen(CMD)
+sleep 3
+Process.kill 'TERM', execution.pid
+
+execution.close
+
+`ps auxw | grep Mortiz | grep -v 'grep' | awk '{print $2}' | xargs kill`
